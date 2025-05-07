@@ -9,6 +9,8 @@ namespace Input {
 	char key_down[KEY_MAX];		//‰Ÿ‚³‚ê‚½uŠÔ 
 	char key_up[KEY_MAX];		//—£‚³‚ê‚½uŠÔ 
 	char Key_Keep[KEY_MAX];		//‰Ÿ‚µ‚Á‚Ï‚È‚µ
+	int mouseBuffer;
+	int backMouseBuffer;
 }
 
 void Input::KeyStateUpdate()
@@ -25,6 +27,8 @@ void Input::KeyStateUpdate()
 		key_down[i] = key_xor & keyBuff[i];		//‰Ÿ‚³‚ê‚½uŠÔ = (Œ»ƒtƒŒ[ƒ€‚Ækey_xor‚ÌAND) 
 		key_up[i] = key_xor & keyBuffOld[i];	//—£‚³‚ê‚½uŠÔ = (‘OƒtƒŒ[ƒ€‚Ækey_xor‚ÌAND) 
 	}
+	backMouseBuffer = mouseBuffer;
+	mouseBuffer = GetMouseInput();
 }
 
 bool Input::IsKeyUP(int keyCode)
