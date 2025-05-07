@@ -1,10 +1,11 @@
 #pragma once
 #include "Library/GameObject.h"
+#include "vector"
 
 class Stage :
     public GameObject
 {
-	int bgHandle; //”wŒi‰æ‘œ‚Ìƒnƒ“ƒhƒ‹
+	std::vector<int> bgHandle; //”wŒi‰æ‘œ‚Ìƒnƒ“ƒhƒ‹
 public:
 	Stage();
 	~Stage();

@@ -47,17 +47,26 @@ namespace
 }
 
 Stage::Stage()
-	: GameObject(), bgHandle(-1)
+	: GameObject()
 {
-	bgHandle = LoadGraph("./bg.png");
+	bgHandle = std::vector<int>(MAP_HEIGHT * MAP_WIDTH, -1);
+	//bgHandle = LoadGraph("./bg.png");
+	LoadDivGraph("./bg.png", MAP_CHIP_WIDTH * MAP_CHIP_HEIGHT, MAP_CHIP_WIDTH, MAP_CHIP_HEIGHT,
+		IMAGE_SIZE, IMAGE_SIZE, bgHandle.data());
 }
 
 Stage::~Stage()
 {
-	if (bgHandle != -1) {
-		DeleteGraph(bgHandle);
-		bgHandle = -1;
+	for (int i = 0; i < bgHandle.size(); i++) {
+		if (bgHandle[i] != -1) {
+			DeleteGraph(bgHandle[i]);
+			bgHandle[i] = -1;
+		}
 	}
+	//if (bgHandle != -1) {
+	//	DeleteGraph(bgHandle);
+	//	bgHandle = -1;
+	//}
 }
 
 void Stage::Update()
@@ -67,14 +76,13 @@ void Stage::Update()
 
 void Stage::Draw()
 {
-	if (bgHandle != -1) {
-		for (int j = 0; j < MAP_HEIGHT; j++) {
-			for (int i = 0; i < MAP_WIDTH; i++) {
-				int kx = myMap[j][i] % MAP_CHIP_WIDTH; // 0,1,2,3
-				int ky = myMap[j][i] / MAP_CHIP_WIDTH; // 0,1,2,3
-				DrawRectGraph(i * IMAGE_SIZE, j * IMAGE_SIZE,
-					kx * IMAGE_SIZE, ky * IMAGE_SIZE, IMAGE_SIZE, IMAGE_SIZE,
-					bgHandle, TRUE);
+
+	for (int j = 0; j < MAP_HEIGHT; j++) {
+		for (int i = 0; i < MAP_WIDTH; i++) {
+			//int kx = myMap[j][i] % MAP_CHIP_WIDTH; // 0,1,2,3
+			//int ky = myMap[j][i] / MAP_CHIP_WIDTH; // 0,1,2,3
+			if (bgHandle[myMap[j][i]] != -1) {
+				DrawGraph(i * IMAGE_SIZE, j * IMAGE_SIZE, bgHandle[myMap[j][i]], TRUE);
 			}
 		}
 		//DrawGraph(0, 0, bgHandle, TRUE);
