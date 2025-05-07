@@ -145,6 +145,7 @@
     <ClInclude Include="ImGui\imstb_rectpack.h" />
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="Library\App.h" />
     <ClInclude Include="Library\GameObject.h" />
     <ClInclude Include="Library\ObjectManager.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="ImGui\imgui_ja_gryph_ranges.cpp" />
     <ClCompile Include="ImGui\imgui_tables.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Library\App.cpp" />
     <ClCompile Include="Library\main.cpp" />
     <ClCompile Include="Library\ObjectManager.cpp" />

@@ -1,5 +1,6 @@
 #include "Stage.h"
 
+
 namespace
 {
 	//const int IMAGE_SIZE = { 32 }; // 画像のサイズ
@@ -53,23 +54,23 @@ Stage::Stage()
 	//ここでvectorの初期化
 	//MAP_WIDTH* MAP_HEIGHT個の配列を確保する
 	//bgHandle = new int[MAP_WIDTH * MAP_HEIGHT];//必要な時に必要な数だけ配列を準備する方法
-	bgHandle_ =  std::vector<int>(MAP_CHIP_WIDTH * MAP_CHIP_HEIGHT, -1); //初期値を-1で初期化する
+	//bgHandle_ =  std::vector<int>(MAP_CHIP_WIDTH * MAP_CHIP_HEIGHT, -1); //初期値を-1で初期化する
 	//gHandle = LoadGraph("./bg.png");
-	LoadDivGraph("./bg.png", MAP_CHIP_WIDTH * MAP_CHIP_HEIGHT, MAP_CHIP_WIDTH, MAP_CHIP_HEIGHT,
-		IMAGE_SIZE, IMAGE_SIZE, bgHandle_.data());
+	//LoadDivGraph("./bg.png", MAP_CHIP_WIDTH * MAP_CHIP_HEIGHT, MAP_CHIP_WIDTH, MAP_CHIP_HEIGHT,
+	//	IMAGE_SIZE, IMAGE_SIZE, bgHandle_.data());
 
 	mapChip_ = new MapChip(); //マップチップのインスタンスを作成
-
+	mapEdit_ = new MapEdit(); //マップエディタのインスタンスを作成
 }
 
 Stage::~Stage()
 {
-	for (int i = 0;i < MAP_CHIP_WIDTH * MAP_CHIP_HEIGHT;i++) {
-		if (bgHandle_[i] != -1) {
-			DeleteGraph(bgHandle_[i]);
-			bgHandle_[i] = -1;
-		}
-	}
+	//for (int i = 0;i < MAP_CHIP_WIDTH * MAP_CHIP_HEIGHT;i++) {
+	//	if (bgHandle_[i] != -1) {
+	//		DeleteGraph(bgHandle_[i]);
+	//		bgHandle_[i] = -1;
+	//	}
+	//}
 	//delete[] bgHandle; //配列の解放 自分で撮ったものは自分で消す
 }
 
@@ -81,13 +82,13 @@ void Stage::Update()
 void Stage::Draw()
 {
 	//背景を描画する
-	for (int j = 0; j < MAP_HEIGHT; j++) {
-		for (int i = 0; i < MAP_WIDTH; i++) {
-			if (bgHandle_[myMap[j][i]] != -1) {
-				DrawGraph(i * IMAGE_SIZE, j * IMAGE_SIZE, bgHandle_[myMap[j][i]], TRUE);
-			}
-		}
-	}
+	//for (int j = 0; j < MAP_HEIGHT; j++) {
+	//	for (int i = 0; i < MAP_WIDTH; i++) {
+	//		if (bgHandle_[myMap[j][i]] != -1) {
+	//			DrawGraph(i * IMAGE_SIZE, j * IMAGE_SIZE, bgHandle_[myMap[j][i]], TRUE);
+	//		}
+	//	}
+	//}
 }
 
 //月火水木金土日 　　０～１５/ 16 = 0

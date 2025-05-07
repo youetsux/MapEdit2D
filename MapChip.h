@@ -11,5 +11,6 @@ public:
 	~MapChip();
 	void Update() override;
 	void Draw() override;
+	int GetHandle(int index) { return bgHandle[index]; } //ƒnƒ“ƒhƒ‹‚ðŽæ“¾‚·‚é
 };
 
