@@ -16,12 +16,21 @@ namespace
 }
 
 MapChip::MapChip()
-	: GameObject()
+	: GameObject(), isUpdate_(false), isInMapChipArea_(false)
 	, bgHandle(MAP_CHIP_WIDTH * MAP_CHIP_HEIGHT, -1) //‰Šú’l‚ğ-1‚Å16*12‚Ì”z—ñ‚ğ‰Šú‰»‚·‚é
 {
 	LoadDivGraph("./bg.png", MAP_CHIP_WIDTH * MAP_CHIP_HEIGHT,
 					         MAP_CHIP_WIDTH, MAP_CHIP_HEIGHT,
 		                     IMAGE_SIZE, IMAGE_SIZE, bgHandle.data());
+	for (int i = 0; i < MAP_CHIP_NUM_X; i++) {
+		for (int j = 0; j < MAP_CHIP_NUM_Y; j++) {
+			Rect tmp{
+				i * IMAGE_SIZE, j * IMAGE_SIZE,
+				IMAGE_SIZE, IMAGE_SIZE
+			};
+			bgRects_.push_back(tmp);
+		}
+	}
 }
 
 
@@ -37,6 +46,22 @@ MapChip::~MapChip()
 
 void MapChip::Update()
 {
+	Point mousePos;
+	if (GetMousePoint(&mousePos.x, &mousePos.y) == -1) {
+		return;
+	}
+	if (mousePos.x > Screen::WIDTH - MAP_CHIP_WIN_WIDTH && mousePos.x < Screen::WIDTH &&
+		mousePos.y > 0 && mousePos.y < MAP_CHIP_WIN_HEIGHT) {
+		isInMapChipArea_ = true;
+	}
+	else
+	{
+		isInMapChipArea_ = false;
+	}
+
+
+	
+
 }
 
 void MapChip::Draw()
@@ -53,6 +78,9 @@ void MapChip::Draw()
 		}
 	}
 
+	if (!isInMapChipArea_)
+		DrawBox(TOPLEFT_X, TOPLEFT_Y, RIGHTBOTTOM_X, RIGHTBOTTOM_Y, GetColor(255, 0, 0), FALSE, 3);
 
-	DrawBox(TOPLEFT_X, TOPLEFT_Y, RIGHTBOTTOM_X, RIGHTBOTTOM_Y, GetColor(255, 0, 0), FALSE, 3);
+	else
+		DrawBox(TOPLEFT_X, TOPLEFT_Y, RIGHTBOTTOM_X, RIGHTBOTTOM_Y, GetColor(255, 0, 0), TRUE, 3);
 }

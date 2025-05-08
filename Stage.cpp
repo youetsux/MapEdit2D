@@ -80,16 +80,38 @@ Stage::~Stage()
 
 void Stage::Update()
 {
+	int px,py;
+	GetMousePoint(&px, &py);
+	
+	DxLib::printfDx(_T("[Mouse Pos](%03d, %03d)\n"),px, py);
+	//if (Input::IsButtonDown(MOUSE_INPUT_LEFT)) {
+	//	DxLib::printfDx(_T("[Mouse L] 入力開始\n"));
+	//}
+	//if (Input::IsButtonKeepDown(MOUSE_INPUT_LEFT)) {
+	//	DxLib::printfDx(_T("[Mouse L] 入力中\n"));
+	//}
+	//if (Input::IsButtonUp(MOUSE_INPUT_LEFT)) {
+	//	DxLib::printfDx(_T("[Mouse L] 入力終了\n"));
+	//}
+	//if (Input::IsButtonDown(MOUSE_INPUT_RIGHT)) {
+	//	DxLib::printfDx(_T("[Mouse R] 入力開始\n"));
+	//}
+	//if (Input::IsButtonKeepDown(MOUSE_INPUT_RIGHT)) {
+	//	DxLib::printfDx(_T("[Mouse R] 入力中\n"));
+	//}
+	//if (Input::IsButtonUp(MOUSE_INPUT_RIGHT)) {
+	//	DxLib::printfDx(_T("[Mouse R] 入力終了\n"));
+	//}
+	//if (Input::IsButtonDown(MOUSE_INPUT_MIDDLE)) {
+	//	DxLib::printfDx(_T("[Mouse M] 入力開始\n"));
+	//}
+	//if (Input::IsButtonKeepDown(MOUSE_INPUT_MIDDLE)) {
+	//	DxLib::printfDx(_T("[Mouse M] 入力中\n"));
+	//}
+	//if (Input::IsButtonUp(MOUSE_INPUT_MIDDLE)) {
+	//	DxLib::printfDx(_T("[Mouse M] 入力終了\n"));
+	//}
 
-	if (Input::IsButtonDown(MOUSE_INPUT_LEFT)) {
-		DxLib::printfDx(_T("[Mouse L] 入力開始\n"));
-	}
-	if (Input::IsButtonKeepDown(MOUSE_INPUT_LEFT)) {
-		DxLib::printfDx(_T("[Mouse L] 入力中\n"));
-	}
-	if (Input::IsButtonUp(MOUSE_INPUT_LEFT)) {
-		DxLib::printfDx(_T("[Mouse L] 入力終了\n"));
-	}
 
 }
 

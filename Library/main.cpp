@@ -17,6 +17,7 @@
 #include "App.h"
 #include "../Source/Screen.h"
 #include "../ImGui/imgui_impl_dxlib.hpp"
+#include "../Input.h"
 
 #define CoGVersion (4.1)
 
@@ -61,7 +62,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		ImGui_ImplDXlib_NewFrame();
 		ImGui::NewFrame();
 #endif
-
+		Input::KeyStateUpdate();
 		AppUpdate();
 
 		if (ProcessMessage() == -1 || AppIsExit()) {
