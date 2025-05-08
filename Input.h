@@ -8,7 +8,12 @@ namespace Input {
 	bool IsKeyDown(int keyCode);
 	int IsKeepKeyDown(int keyCode);
 
-	bool IsMouseDown();
+	bool IsButtonDown(int keyCode);
+	bool IsButtonKeepDown(int keyCode);
+	bool IsButtonUp(int keyCode);
+	bool IsAnyButtonDown();
+	bool IsAnyButtonKeepDown();
+	bool IsAnyButtonUp();
 	int GetMouseX();
 	int GetMouseY();
 	

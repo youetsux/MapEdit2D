@@ -1,4 +1,5 @@
 #include "Stage.h"
+#include "Input.h"
 
 
 namespace
@@ -61,6 +62,9 @@ Stage::Stage()
 
 	mapChip_ = new MapChip(); //マップチップのインスタンスを作成
 	mapEdit_ = new MapEdit(); //マップエディタのインスタンスを作成
+	mousePos_.x = -10; //マウスの座標を初期化
+	mousePos_.y = -10;//マウスの座標を初期化	
+	isMouseDown_ = false; //マウスの状態を初期化
 }
 
 Stage::~Stage()
@@ -76,6 +80,16 @@ Stage::~Stage()
 
 void Stage::Update()
 {
+
+	if (Input::IsButtonDown(MOUSE_INPUT_LEFT)) {
+		DxLib::printfDx(_T("[Mouse L] 入力開始\n"));
+	}
+	if (Input::IsButtonKeepDown(MOUSE_INPUT_LEFT)) {
+		DxLib::printfDx(_T("[Mouse L] 入力中\n"));
+	}
+	if (Input::IsButtonUp(MOUSE_INPUT_LEFT)) {
+		DxLib::printfDx(_T("[Mouse L] 入力終了\n"));
+	}
 
 }
 

@@ -45,3 +45,48 @@ int Input::IsKeepKeyDown(int keyCode)
 {
 	return(Key_Keep[keyCode]);
 }
+
+bool Input::IsButtonDown(int keyCode)
+{
+	return (mouseBuffer & keyCode) != 0;
+}
+
+bool Input::IsButtonKeepDown(int keyCode)
+{
+	return ((mouseBuffer & keyCode) != 0) && !((backMouseBuffer & keyCode) != 0);
+}
+
+bool Input::IsButtonUp(int keyCode)
+{
+	return !((mouseBuffer & keyCode) != 0) && ((backMouseBuffer & keyCode) != 0);
+}
+
+bool Input::IsAnyButtonDown()
+{
+	return mouseBuffer != 0;
+}
+
+bool Input::IsAnyButtonKeepDown()
+{
+	return (mouseBuffer != 0) && !(backMouseBuffer != 0);
+}
+
+bool Input::IsAnyButtonUp()
+{
+	return !(mouseBuffer != 0) && (backMouseBuffer != 0);
+}
+
+int Input::GetMouseX()
+{
+	POINT mousePos;
+	GetCursorPos(&mousePos);
+	return mousePos.x;
+}
+
+int Input::GetMouseY()
+{
+	POINT mousePos;
+	GetCursorPos(&mousePos);
+	return mousePos.y;
+}
+
