@@ -81,6 +81,10 @@ void MapChip::Draw()
 	if (!isInMapChipArea_)
 		DrawBox(TOPLEFT_X, TOPLEFT_Y, RIGHTBOTTOM_X, RIGHTBOTTOM_Y, GetColor(255, 0, 0), FALSE, 3);
 
-	else
-		DrawBox(TOPLEFT_X, TOPLEFT_Y, RIGHTBOTTOM_X, RIGHTBOTTOM_Y, GetColor(255, 0, 0), TRUE, 3);
+	else 
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
+		DrawBox(TOPLEFT_X, TOPLEFT_Y, RIGHTBOTTOM_X, RIGHTBOTTOM_Y, GetColor(200, 255, 255), TRUE, 3); 
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
 }
