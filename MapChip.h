@@ -21,7 +21,8 @@ class MapChip :
 	std::vector<Rect> bgRects_;
 	bool isUpdate_;
 	bool isInMapChipArea_;
-	Point selected_;
+	Point selected_;//選択したマップチップの座標
+	int selectedIndex_;//選択したマップチップのインデックス
 public:
 	MapChip();
 	~MapChip();
