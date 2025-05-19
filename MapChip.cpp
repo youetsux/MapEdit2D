@@ -17,7 +17,7 @@ namespace
 
 MapChip::MapChip()
 	: GameObject(), isUpdate_(false), isInMapChipArea_(false)
-	, bgHandle(MAP_CHIP_WIDTH * MAP_CHIP_HEIGHT, -1) //初期値を-1で16*12の配列を初期化する
+	, bgHandle(MAP_CHIP_WIDTH * MAP_CHIP_HEIGHT, -1),selected_({0,0}) //初期値を-1で16*12の配列を初期化する
 {
 	LoadDivGraph("./bg.png", MAP_CHIP_WIDTH * MAP_CHIP_HEIGHT,
 					         MAP_CHIP_WIDTH, MAP_CHIP_HEIGHT,
@@ -53,15 +53,13 @@ void MapChip::Update()
 	if (mousePos.x > Screen::WIDTH - MAP_CHIP_WIN_WIDTH && mousePos.x < Screen::WIDTH &&
 		mousePos.y > 0 && mousePos.y < MAP_CHIP_WIN_HEIGHT) {
 		isInMapChipArea_ = true;
+		selected_.x = (mousePos.x - (Screen::WIDTH - MAP_CHIP_WIN_WIDTH)) / IMAGE_SIZE;
+		selected_.y = mousePos.y / IMAGE_SIZE;
 	}
 	else
 	{
 		isInMapChipArea_ = false;
 	}
-
-
-	
-
 }
 
 void MapChip::Draw()
@@ -75,16 +73,23 @@ void MapChip::Draw()
 		for (int j = 0; j < MAP_CHIP_NUM_Y; j++) {
 			DrawGraph(TOPLEFT_X + i * IMAGE_SIZE, TOPLEFT_Y +  j * IMAGE_SIZE,
 				      bgHandle[i + j * MAP_CHIP_NUM_X], TRUE);
+
 		}
 	}
 
-	if (!isInMapChipArea_)
-		DrawBox(TOPLEFT_X, TOPLEFT_Y, RIGHTBOTTOM_X, RIGHTBOTTOM_Y, GetColor(255, 0, 0), FALSE, 3);
-
-	else 
+	if (isInMapChipArea_)
 	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
-		DrawBox(TOPLEFT_X, TOPLEFT_Y, RIGHTBOTTOM_X, RIGHTBOTTOM_Y, GetColor(200, 255, 255), TRUE, 3); 
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		int xM = Screen::WIDTH - MAP_CHIP_WIN_WIDTH;
+		DrawBox(xM + selected_.x * IMAGE_SIZE, selected_.y * IMAGE_SIZE,
+			xM + (selected_.x + 1) * IMAGE_SIZE, (selected_.y + 1) * IMAGE_SIZE,
+			GetColor(255, 0, 0), FALSE, 2);
+
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+		DrawBox(xM + selected_.x * IMAGE_SIZE + 1, selected_.y * IMAGE_SIZE - 1,
+			xM + (selected_.x + 1) * IMAGE_SIZE -1, (selected_.y + 1) * IMAGE_SIZE + 1,
+			GetColor(255, 255, 0), TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 0);
+
 	}
+
 }

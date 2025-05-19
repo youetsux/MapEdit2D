@@ -21,6 +21,7 @@ class MapChip :
 	std::vector<Rect> bgRects_;
 	bool isUpdate_;
 	bool isInMapChipArea_;
+	Point selected_;
 public:
 	MapChip();
 	~MapChip();
