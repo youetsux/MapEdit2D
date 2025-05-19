@@ -70,7 +70,7 @@ void MapChip::Update()
 	ImGui::Begin("config 1");
 
 	ImGui::Text("MouseMode %s", (isInMapChipArea_ ? "true" : "false"));
-	ImGui::Text("Dragging %s", (isDragging_ ? "true" : "false"));
+	//ImGui::Text("Dragging %s", (isDragging_ ? "true" : "false"));
 	ImGui::End();
 }
 
