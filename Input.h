@@ -1,6 +1,6 @@
 #pragma once
 
-
+//https://inemaru.hatenablog.com/entry/2018/05/10/031815
 namespace Input {
 	//キーボード取得関連
 	void KeyStateUpdate(); //キーの状態を毎フレーム更新する
