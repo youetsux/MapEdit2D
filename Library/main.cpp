@@ -17,6 +17,7 @@
 #include "App.h"
 #include "../Source/Screen.h"
 #include "../ImGui/imgui_impl_dxlib.hpp"
+#include "../Input.h"
 
 #define CoGVersion (4.1)
 
@@ -57,6 +58,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	AppInit();
 
 	while (true) {
+		Input::KeyStateUpdate();
+
 #if IMGUI
 		ImGui_ImplDXlib_NewFrame();
 		ImGui::NewFrame();
