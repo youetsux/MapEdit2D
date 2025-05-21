@@ -14,6 +14,8 @@ class Stage :
 	MapEdit* mapEdit_; //マップエディタのポインタ
 	POINT mousePos_; //マウスの座標
 	bool isMouseDown_; //マウスの状態;
+	bool isOldMouseDown_; //1フレ前のマウスの状態
+	bool isDragging_;
 public:
 	Stage();
 	~Stage();
