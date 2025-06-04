@@ -88,15 +88,16 @@ void MapChip::Draw()
 	if (isInMapChipArea_)
 	{
 		int xM = Screen::WIDTH - MAP_CHIP_WIN_WIDTH;
-		DrawBox(xM + selected_.x * IMAGE_SIZE, selected_.y * IMAGE_SIZE,
-			xM + (selected_.x + 1) * IMAGE_SIZE, (selected_.y + 1) * IMAGE_SIZE,
-			GetColor(255, 0, 0), FALSE, 2);
+
 
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
 		DrawBox(xM + selected_.x * IMAGE_SIZE + 1, selected_.y * IMAGE_SIZE - 1,
 			xM + (selected_.x + 1) * IMAGE_SIZE - 1, (selected_.y + 1) * IMAGE_SIZE + 1,
 			GetColor(255, 255, 0), TRUE);
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 0);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		DrawBox(xM + selected_.x * IMAGE_SIZE, selected_.y * IMAGE_SIZE,
+			xM + (selected_.x + 1) * IMAGE_SIZE, (selected_.y + 1) * IMAGE_SIZE,
+			GetColor(255, 0, 0), FALSE, 2);
 
 	}
 
