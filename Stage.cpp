@@ -33,39 +33,40 @@ Stage::~Stage()
 
 void Stage::Update()
 {
-	if (Input::IsButtonDown(MOUSE_INPUT_LEFT)) {
-		//マウスが押された瞬間の処理
-		DxLib::printfDx("左押された！！：");
-	}
+
+	//if (Input::IsMouseDown()) {
+	//	//マウスが押された瞬間の処理
+	//	DxLib::printfDx("左押された！！：");
+	//}
 	if (Input::IsButtonDown(MOUSE_INPUT_RIGHT)) {
 		//マウスが押された瞬間の処理
 		DxLib::printfDx("右押された！！：");
 	}
-	if (Input::IsButtonKeep(MOUSE_INPUT_LEFT)) {
-		//マウスが押されている間の処理
-		DxLib::printfDx("左押されている！！：");
-	}
-	if (Input::IsButtonKeep(MOUSE_INPUT_RIGHT)) {
-		//マウスが押されている間の処理
-		DxLib::printfDx("右押されている！！：");
-	}
-	if (Input::IsButtonUP(MOUSE_INPUT_LEFT)) {
-		//マウスが離された瞬間の処理
-		DxLib::printfDx("左離された！！：");
-	}
-	if (Input::IsButtonUP(MOUSE_INPUT_RIGHT)) {
-		//マウスが離された瞬間の処理
-		DxLib::printfDx("右離された！！：");
-	}
-	int mx=-1, my=-1;
-	if (GetMousePoint(&mx, &my) == 0)
-	{
-		//マウスの座標を取得
-		DxLib::printfDx("マウスの座標(%d,%d)\n", mx, my);
-	}
-	else {
-		DxLib::printfDx("マウスの座標取得失敗\n");
-	}
+	//if (Input::IsButtonKeep(MOUSE_INPUT_LEFT)) {
+	//	//マウスが押されている間の処理
+	//	DxLib::printfDx("左押されている！！：");
+	//}
+	//if (Input::IsButtonKeep(MOUSE_INPUT_RIGHT)) {
+	//	//マウスが押されている間の処理
+	//	DxLib::printfDx("右押されている！！：");
+	//}
+	//if (Input::IsButtonUP(MOUSE_INPUT_LEFT)) {
+	//	//マウスが離された瞬間の処理
+	//	DxLib::printfDx("左離された！！：");
+	//}
+	//if (Input::IsButtonUP(MOUSE_INPUT_RIGHT)) {
+	//	//マウスが離された瞬間の処理
+	//	DxLib::printfDx("右離された！！：");
+	//}
+	//int mx=-1, my=-1;
+	//if (GetMousePoint(&mx, &my) == 0)
+	//{
+	//	//マウスの座標を取得
+	//	DxLib::printfDx("マウスの座標(%d,%d)\n", mx, my);
+	//}
+	//else {
+	//	DxLib::printfDx("マウスの座標取得失敗\n");
+	//}
 
 }
 

@@ -23,6 +23,7 @@ class MapChip :
 	bool isInMapChipArea_;
 	Point selected_;//選択したマップチップの座標
 	int selectedIndex_;//選択したマップチップのインデックス
+	bool isHold_;
 public:
 	MapChip();
 	~MapChip();

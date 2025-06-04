@@ -49,6 +49,9 @@ MapChip::~MapChip()
 
 void MapChip::Update()
 {
+
+
+
 	Point mousePos;
 	if (GetMousePoint(&mousePos.x, &mousePos.y) == -1) {
 		return;
@@ -61,6 +64,11 @@ void MapChip::Update()
 	if (isInMapChipArea_) {
 		selected_.x = (mousePos.x - (Screen::WIDTH - MAP_CHIP_WIN_WIDTH)) / IMAGE_SIZE;
 		selected_.y = mousePos.y / IMAGE_SIZE;
+		if (Input::IsButtonDown(MOUSE_INPUT_LEFT))
+		{
+			isHold_ = true;
+			selectedIndex_ = bgHandle[selected_.y * MAP_CHIP_NUM_X + selected_.x];
+		}
 	}
 	else
 	{
@@ -88,8 +96,6 @@ void MapChip::Draw()
 	if (isInMapChipArea_)
 	{
 		int xM = Screen::WIDTH - MAP_CHIP_WIN_WIDTH;
-
-
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
 		DrawBox(xM + selected_.x * IMAGE_SIZE + 1, selected_.y * IMAGE_SIZE - 1,
 			xM + (selected_.x + 1) * IMAGE_SIZE - 1, (selected_.y + 1) * IMAGE_SIZE + 1,
@@ -98,7 +104,15 @@ void MapChip::Draw()
 		DrawBox(xM + selected_.x * IMAGE_SIZE, selected_.y * IMAGE_SIZE,
 			xM + (selected_.x + 1) * IMAGE_SIZE, (selected_.y + 1) * IMAGE_SIZE,
 			GetColor(255, 0, 0), FALSE, 2);
-
+	}
+	if (isHold_)
+	{
+		Point mousePos;
+		if (GetMousePoint(&mousePos.x, &mousePos.y) != -1) 
+		{
+			DrawExtendGraph(mousePos.x, mousePos.y,
+				mousePos.x + IMAGE_SIZE, mousePos.y + IMAGE_SIZE, selectedIndex_, TRUE);
+		}
 	}
 
 }

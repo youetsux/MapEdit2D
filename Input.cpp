@@ -9,8 +9,8 @@ namespace Input {
 	char key_down[KEY_MAX];		//押された瞬間 
 	char key_up[KEY_MAX];		//離された瞬間 
 	char Key_Keep[KEY_MAX];		//押しっぱなし
-	int mousePre; //前のフレームのマウス状態　previous
-	int mouseNow; //現フレームのマウス状態
+	int mousePre = 0; //前のフレームのマウス状態　previous
+	int mouseNow = 0; //現フレームのマウス状態
 }
 
 void Input::KeyStateUpdate()
@@ -29,6 +29,7 @@ void Input::KeyStateUpdate()
 	}
 	mousePre = mouseNow;	//前のフレームのマウス状態を保存
 	mouseNow = GetMouseInput();	//マウスの状態を取得
+
 }
 
 
@@ -47,29 +48,21 @@ int Input::IsKeepKeyDown(int keyCode)
 	return(Key_Keep[keyCode]);
 }
 
-//マウスの状態を取得する関数群
-//mouseNow ,mousePre == 0 押されていない　!= 0 は押されている
-//StageのDrawで
-//if (Input::IsMouseDown())
-//{
-//	//マウスが押された瞬間の処理
-//	DxLib::printfDx("マウスが押された瞬間！\n");
-//}
 
 
 bool Input::IsMouseDown()
 {
-	return( mouseNow && !mousePre );
+	return( mouseNow == 1 && mousePre == 0 );
 }
 
 bool Input::IsMouseUP()
 {
-	return (!mouseNow && mousePre);
+	return (mouseNow == 0 && mousePre == 1);
 }
 
 bool Input::IsMouseKeep()
 {
-	return (mouseNow && mousePre);
+	return (mouseNow == 1 && mousePre  == 1);
 }
 
 bool Input::IsButtonDown(int button)
