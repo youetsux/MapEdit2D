@@ -131,6 +131,7 @@
     <ClInclude Include="Stage.h">
       <Filter>PlayScene</Filter>
     </ClInclude>
+    <ClInclude Include="globals.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Library">

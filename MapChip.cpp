@@ -56,7 +56,7 @@ void MapChip::Update()
 	if (GetMousePoint(&mousePos.x, &mousePos.y) == -1) {
 		return;
 	}
-
+		
 	isInMapChipArea_ = (mousePos.x > Screen::WIDTH - MAP_CHIP_WIN_WIDTH && mousePos.x < Screen::WIDTH &&
 		mousePos.y > 0 && mousePos.y < MAP_CHIP_WIN_HEIGHT);
 
@@ -113,6 +113,27 @@ void MapChip::Draw()
 			DrawExtendGraph(mousePos.x, mousePos.y,
 				mousePos.x + IMAGE_SIZE, mousePos.y + IMAGE_SIZE, selectedIndex_, TRUE);
 		}
+		if (Input::IsButtonUP(MOUSE_INPUT_RIGHT))
+		{
+			isHold_ = false; //マウスのボタンが離されたら持っている状態を解除
+			selectedIndex_ = -1; //選択したインデックスをリセット
+		}
 	}
 
+}
+
+bool MapChip::IsHold()
+{
+	return isHold_;	
+}
+
+int MapChip::GetHoldImage()
+{
+	if(isHold_)
+	{
+		return selectedIndex_;
+	}else
+	{
+		return -1; //持っていない場合は-1を返す
+	}
 }
