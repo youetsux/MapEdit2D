@@ -30,39 +30,28 @@ Stage::~Stage()
 
 void Stage::Update()
 {
+	//Point mousePos;
+	//if (GetMousePoint(&mousePos.x, &mousePos.y) == -1) {
+	//	return;
+	//}
+	
+	//左上　mapEditRect_.x, mapEditRect_.y
+	//右上　mapEditRect_.x + mapEditRect_.w, mapEditRect_.y
+	//右下  mapEditRect_.x + mapEditRect_.w, mapEditRect_.y + mapEditRect_.h
+	//左下  mapEditRect_.x, mapEditRect_.y + mapEditRect_.h
+	//	// グリッド座標に変換
+	//if (mapEdit_->IsInMapEditArea()) {
+	//	return; //マップエディタ領域外なら何もしない
+	//}
 
-	//if (Input::IsMouseDown()) {
-	//	//マウスが押された瞬間の処理
-	//	DxLib::printfDx("左押された！！：");
-	//}
-	//if (Input::IsButtonDown(MOUSE_INPUT_RIGHT)) {
-	//	//マウスが押された瞬間の処理
-	//	DxLib::printfDx("右押された！！：");
-	//}
-	//if (Input::IsButtonKeep(MOUSE_INPUT_LEFT)) {
-	//	//マウスが押されている間の処理
-	//	DxLib::printfDx("左押されている！！：");
-	//}
-	//if (Input::IsButtonKeep(MOUSE_INPUT_RIGHT)) {
-	//	//マウスが押されている間の処理
-	//	DxLib::printfDx("右押されている！！：");
-	//}
-	//if (Input::IsButtonUP(MOUSE_INPUT_LEFT)) {
-	//	//マウスが離された瞬間の処理
-	//	DxLib::printfDx("左離された！！：");
-	//}
-	//if (Input::IsButtonUP(MOUSE_INPUT_RIGHT)) {
-	//	//マウスが離された瞬間の処理
-	//	DxLib::printfDx("右離された！！：");
-	//}
-	//int mx=-1, my=-1;
-	//if (GetMousePoint(&mx, &my) == 0)
+	//int gridX = (mousePos.x - LEFT_MARGIN) / MAP_IMAGE_SIZE;
+	//int gridY = (mousePos.y - TOP_MARGIN) / MAP_IMAGE_SIZE;
+
+	//drawAreaRect_ = { LEFT_MARGIN + gridX * MAP_IMAGE_SIZE, TOP_MARGIN + gridY * MAP_IMAGE_SIZE,
+	//	MAP_IMAGE_SIZE, MAP_IMAGE_SIZE };
+	//if (mapChip_->GetHoldImage() != -1) //マップチップを持っているなら
 	//{
-	//	//マウスの座標を取得
-	//	DxLib::printfDx("マウスの座標(%d,%d)\n", mx, my);
-	//}
-	//else {
-	//	DxLib::printfDx("マウスの座標取得失敗\n");
+	//	//mapEdit_->SetMap(, mapChip_->GetHoldImage());
 	//}
 
 }
