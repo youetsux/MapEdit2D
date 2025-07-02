@@ -132,6 +132,7 @@
       <Filter>PlayScene</Filter>
     </ClInclude>
     <ClInclude Include="globals.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Library">
@@ -149,5 +150,8 @@
     <Filter Include="ImGui">
       <UniqueIdentifier>{a717257b-67b3-4bfa-834c-1e34032b33b0}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="project.rc" />
   </ItemGroup>
 </Project>

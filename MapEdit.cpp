@@ -3,6 +3,7 @@
 #include "Input.h"
 #include "DxLib.h"
 #include "MapChip.h"
+#include <fstream>
 
 
 MapEdit::MapEdit()
@@ -63,17 +64,39 @@ void MapEdit::Update()
 		MAP_IMAGE_SIZE, MAP_IMAGE_SIZE };
 
 	//マウスのボタンが押されたら、持ってる画像をその座標に貼る
-	if (Input::IsButtonDown(MOUSE_INPUT_LEFT)) //左クリックでマップに値をセット
+	//if (Input::IsButtonDown(MOUSE_INPUT_LEFT)) //左クリックでマップに値をセット
+	//{
+	//	MapChip* mapChip = FindGameObject<MapChip>();
+
+	//	if (CheckHitKey(KEY_INPUT_LSHIFT)) //Rキーを押しているなら
+	//	{
+	//		SetMap({ gridX, gridY }, -1); //マップに値をセット（-1は何もない状態）
+	//		return; //マップチップを削除したらここで終了
+	//	}
+	//	else if (mapChip && mapChip->IsHold()) //マップチップを持っているなら
+	//	{
+	//		SetMap({ gridX, gridY }, mapChip->GetHoldImage()); //マップに値をセット
+	//	}
+	//}
+
+	if (Input::IsButtonKeep(MOUSE_INPUT_LEFT)) //左クリックでマップに値をセット
 	{
 		MapChip* mapChip = FindGameObject<MapChip>();
-
-		if (mapChip && mapChip->IsHold()) //マップチップを持っているなら
+		
+		if (CheckHitKey(KEY_INPUT_LSHIFT)) //Rキーを押しているなら
+		{
+			SetMap({ gridX, gridY }, -1); //マップに値をセット（-1は何もない状態）
+			return; //マップチップを削除したらここで終了
+		}
+		else if (mapChip && mapChip->IsHold()) //マップチップを持っているなら
 		{
 			SetMap({ gridX, gridY }, mapChip->GetHoldImage()); //マップに値をセット
 		}
 	}
-
-
+	if (Input::IsKeyDown(KEY_INPUT_S))
+	{
+		SaveMapData();
+	}
 }
 
 void MapEdit::Draw()
@@ -112,5 +135,25 @@ void MapEdit::Draw()
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	
+
+}
+
+void MapEdit::SaveMapData()
+{
+	printfDx("File Saved!!!\n");
+
+	std::ofstream file("data.dat");
+	MapChip* mc = FindGameObject<MapChip>();
+
+	for (int j = 0; j < MAP_HEIGHT; j++) {
+		for (int i = 0; i < MAP_WIDTH; i++) {
+
+			int index = mc->GetChipIndex(myMap_[j * MAP_WIDTH + i]);
+			file << index << " ";
+		}
+		file << std::endl;
+	}
+
+	file.close();
 
 }
