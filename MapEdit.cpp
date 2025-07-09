@@ -6,11 +6,14 @@
 #include "MapChip.h"
 #include <fstream>
 #include <codecvt>
+#include <sstream>
+#include <string>
+#include <iostream>
 
 
 MapEdit::MapEdit()
 	:GameObject(), myMap_(MAP_WIDTH* MAP_HEIGHT, -1), //初期値を-1で20*20の配列を初期化する
-	 isInMapEditArea_(false) //マップエディタ領域内にいるかどうか
+	isInMapEditArea_(false) //マップエディタ領域内にいるかどうか
 {
 	mapEditRect_ = { LEFT_MARGIN, TOP_MARGIN,
 		MAP_WIDTH * MAP_IMAGE_SIZE, MAP_HEIGHT * MAP_IMAGE_SIZE };
@@ -84,7 +87,7 @@ void MapEdit::Update()
 	if (Input::IsButtonKeep(MOUSE_INPUT_LEFT)) //左クリックでマップに値をセット
 	{
 		MapChip* mapChip = FindGameObject<MapChip>();
-		
+
 		if (CheckHitKey(KEY_INPUT_LSHIFT)) //Rキーを押しているなら
 		{
 			SetMap({ gridX, gridY }, -1); //マップに値をセット（-1は何もない状態）
@@ -123,13 +126,13 @@ void MapEdit::Draw()
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 	DrawBox(LEFT_MARGIN + 0, TOP_MARGIN + 0,
-		LEFT_MARGIN + MAP_WIDTH * MAP_IMAGE_SIZE, TOP_MARGIN + MAP_HEIGHT * MAP_IMAGE_SIZE,GetColor(255, 255, 0), FALSE, 5);
+		LEFT_MARGIN + MAP_WIDTH * MAP_IMAGE_SIZE, TOP_MARGIN + MAP_HEIGHT * MAP_IMAGE_SIZE, GetColor(255, 255, 0), FALSE, 5);
 	for (int j = 0; j < MAP_HEIGHT; j++) {
 		for (int i = 0; i < MAP_WIDTH; i++) {
 			DrawLine(LEFT_MARGIN + i * MAP_IMAGE_SIZE, TOP_MARGIN + j * MAP_IMAGE_SIZE,
 				LEFT_MARGIN + (i + 1) * MAP_IMAGE_SIZE, TOP_MARGIN + j * MAP_IMAGE_SIZE, GetColor(255, 255, 255), 1);
 			DrawLine(LEFT_MARGIN + i * MAP_IMAGE_SIZE, TOP_MARGIN + j * MAP_IMAGE_SIZE,
-				LEFT_MARGIN + i * MAP_IMAGE_SIZE, TOP_MARGIN + (j + 1) * MAP_IMAGE_SIZE, GetColor(255, 255, 255),  1);
+				LEFT_MARGIN + i * MAP_IMAGE_SIZE, TOP_MARGIN + (j + 1) * MAP_IMAGE_SIZE, GetColor(255, 255, 255), 1);
 		}
 	}
 	if (isInMapEditArea_) {
@@ -140,7 +143,7 @@ void MapEdit::Draw()
 	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	
+
 
 }
 
@@ -149,7 +152,7 @@ void MapEdit::SaveMapData()
 	//頑張ってファイル選択ダイアログを出す回
 	TCHAR filename[255] = "";
 	OPENFILENAME ofn = { 0 };
-	
+
 	ofn.lStructSize = sizeof(ofn);
 	//ウィンドウのオーナー＝親ウィンドウのハンドル
 	ofn.hwndOwner = GetMainWindowHandle();
@@ -157,8 +160,8 @@ void MapEdit::SaveMapData()
 	ofn.lpstrFile = filename;
 	ofn.nMaxFile = 255;
 	ofn.Flags = OFN_OVERWRITEPROMPT;
-	
-	
+
+
 	if (GetSaveFileName(&ofn))
 	{
 		printfDx("ファイルが選択された\n");
@@ -166,32 +169,36 @@ void MapEdit::SaveMapData()
 		//std::filesystem ファイル名だけ取り出す
 		//ofstreamを開く
 		std::ofstream openfile(filename);
-	}
-	else
-	{
 		//ファイルの選択がキャンセル
 		printfDx("セーブがキャンセル\n");
-	}
+		openfile << "#TinyMapData\n";
 
-	printfDx("File Saved!!!\n");
+		MapChip* mc = FindGameObject<MapChip>();
 
-	std::ofstream file("data.dat");
-	MapChip* mc = FindGameObject<MapChip>();
+		for (int j = 0; j < MAP_HEIGHT; j++) {
+			for (int i = 0; i < MAP_WIDTH; i++) {
 
-	for (int j = 0; j < MAP_HEIGHT; j++) {
-		for (int i = 0; i < MAP_WIDTH; i++) {
+				int index;
+				if (myMap_[j * MAP_WIDTH + i] != -1)
+					index = mc->GetChipIndex(myMap_[j * MAP_WIDTH + i]);
+				else
+					index = -1;
 
-			int index;
-			if (myMap_[j * MAP_WIDTH + i] != -1)
-				index = mc->GetChipIndex(myMap_[j * MAP_WIDTH + i]);
-			else
-				index = -1;
-			file << index << " ";
+				if (i == MAP_WIDTH - 1) //最後の要素なら改行しない
+				{
+					openfile << index; //最後の要素はカンマをつけない
+				}
+				else
+				{
+					//最後の要素以外はカンマをつける
+					openfile << index << ",";
+				}
+			}
+			openfile << std::endl;
 		}
-		file << std::endl;
+		openfile.close();
+		printfDx("File Saved!!!\n");
 	}
-
-	file.close();
 }
 
 void MapEdit::LoadMapData()
@@ -217,13 +224,47 @@ void MapEdit::LoadMapData()
 		//std::filesystem ファイル名だけ取り出す
 		//ifstreamを開く input file stream
 		std::ifstream inputfile(filename);
+		//ファイルがオープンしたかどうかはチェックが必要
 		std::string line;
 
-
+		//マップチップの情報を取りたい！
+		MapChip* mc = FindGameObject<MapChip>();
+		myMap_.clear();//マップを空に！
 		while (std::getline(inputfile, line)) {
 			// 空行はスキップ
 			if (line.empty()) continue;
-			printfDx("%s\n",line.c_str());
+			//printfDx("%s\n", line.c_str());
+			//ここに、読み込みの処理を書いていく！
+			if (line[0] != '#')
+			{
+				std::istringstream iss(line);
+				std::string tmp;//これに一個ずつ読み込んでいくよ
+				while (getline(iss, tmp, ',')) {
+					//if(tmp == -1)
+					//	myMap_.push_back( -1);
+					//else
+					//	myMap_.push_back(mc->GetHandle(tmp)); //マップにハンドルをセット
+					printfDx("%s ", tmp.c_str());
+					if (tmp == "-1")
+					{
+						myMap_.push_back(-1); //何もない状態
+					}
+					else
+					{
+						int index = std::stoi(tmp);
+						int handle = mc->GetHandle(index);
+						myMap_.push_back(handle); //マップにハンドルをセット
+					}
+
+					
+				}
+				printfDx("\n");
+			}
+			//else
+			//{
+			//	MessageBox(nullptr, "ファイル形式が間違っています", "読み込みエラー", 
+			//		MB_OK | MB_ICONWARNING);
+			//}
 		}
 	}
 	else
@@ -231,7 +272,6 @@ void MapEdit::LoadMapData()
 		//ファイルの選択がキャンセル
 		printfDx("セーブがキャンセル\n");
 	}
-
 }
 
 
