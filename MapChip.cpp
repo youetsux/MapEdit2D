@@ -59,8 +59,6 @@ MapChip::~MapChip()
 void MapChip::Update()
 {
 
-
-
 	Point mousePos;
 	if (GetMousePoint(&mousePos.x, &mousePos.y) == -1) {
 		return;
@@ -149,11 +147,15 @@ int MapChip::GetHoldImage()
 
 int MapChip::GetChipIndex(int handle)
 {
+
+	return HandleToIndex[handle];
+
 	//for (int i = 0;i < bgHandle.size();i++)
 	//{
 	//	if (handle == bgHandle[i])
 	//		return i;
 	//}
-	return ? ? ? ? ? ? ;
-	return -1;
+	//int a = HandleToIndex[handle];
+	//if(HandleToIndex[handle])
+	
 }

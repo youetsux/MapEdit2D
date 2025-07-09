@@ -1,9 +1,11 @@
+#include <windows.h>
 #include "MapEdit.h"
 #include <cassert>
 #include "Input.h"
 #include "DxLib.h"
 #include "MapChip.h"
 #include <fstream>
+#include <codecvt>
 
 
 MapEdit::MapEdit()
@@ -97,6 +99,10 @@ void MapEdit::Update()
 	{
 		SaveMapData();
 	}
+	if (Input::IsKeyDown(KEY_INPUT_L))
+	{
+		LoadMapData();
+	}
 }
 
 void MapEdit::Draw()
@@ -140,6 +146,33 @@ void MapEdit::Draw()
 
 void MapEdit::SaveMapData()
 {
+	//頑張ってファイル選択ダイアログを出す回
+	TCHAR filename[255] = "";
+	OPENFILENAME ofn = { 0 };
+	
+	ofn.lStructSize = sizeof(ofn);
+	//ウィンドウのオーナー＝親ウィンドウのハンドル
+	ofn.hwndOwner = GetMainWindowHandle();
+	ofn.lpstrFilter = "全てのファイル (*.*)\0*.*\0";
+	ofn.lpstrFile = filename;
+	ofn.nMaxFile = 255;
+	ofn.Flags = OFN_OVERWRITEPROMPT;
+	
+	
+	if (GetSaveFileName(&ofn))
+	{
+		printfDx("ファイルが選択された\n");
+		//ファイルを開いて、セーブ
+		//std::filesystem ファイル名だけ取り出す
+		//ofstreamを開く
+		std::ofstream openfile(filename);
+	}
+	else
+	{
+		//ファイルの選択がキャンセル
+		printfDx("セーブがキャンセル\n");
+	}
+
 	printfDx("File Saved!!!\n");
 
 	std::ofstream file("data.dat");
@@ -148,12 +181,57 @@ void MapEdit::SaveMapData()
 	for (int j = 0; j < MAP_HEIGHT; j++) {
 		for (int i = 0; i < MAP_WIDTH; i++) {
 
-			int index = mc->GetChipIndex(myMap_[j * MAP_WIDTH + i]);
+			int index;
+			if (myMap_[j * MAP_WIDTH + i] != -1)
+				index = mc->GetChipIndex(myMap_[j * MAP_WIDTH + i]);
+			else
+				index = -1;
 			file << index << " ";
 		}
 		file << std::endl;
 	}
 
 	file.close();
+}
+
+void MapEdit::LoadMapData()
+{
+	//頑張ってファイル選択ダイアログを出す回
+	TCHAR filename[255] = "";
+	OPENFILENAME ifn = { 0 };
+
+	ifn.lStructSize = sizeof(ifn);
+	//ウィンドウのオーナー＝親ウィンドウのハンドル
+	ifn.hwndOwner = GetMainWindowHandle();
+	ifn.lpstrFilter = "全てのファイル (*.*)\0*.*\0";
+	ifn.lpstrFile = filename;
+	ifn.nMaxFile = 255;
+	//ifn.Flags = OFN_OVERWRITEPROMPT;
+
+	//GetOpenFileName()
+
+	if (GetOpenFileName(&ifn))
+	{
+		printfDx("ファイルが選択された→%s\n", filename);
+		//ファイルを開いて、セーブ
+		//std::filesystem ファイル名だけ取り出す
+		//ifstreamを開く input file stream
+		std::ifstream inputfile(filename);
+		std::string line;
+
+
+		while (std::getline(inputfile, line)) {
+			// 空行はスキップ
+			if (line.empty()) continue;
+			printfDx("%s\n",line.c_str());
+		}
+	}
+	else
+	{
+		//ファイルの選択がキャンセル
+		printfDx("セーブがキャンセル\n");
+	}
 
 }
+
+
