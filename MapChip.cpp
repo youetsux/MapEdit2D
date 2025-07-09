@@ -1,21 +1,50 @@
 #include "MapChip.h"
+#include "globals.h"
 #include "Source\Screen.h"
 #include "Input.h"
 #include "ImGui/imgui.h"
 
 namespace
 {
-	//同じ名前の変数はあとでまとめましょう
-	const int IMAGE_SIZE = { 32 }; // 画像のサイズ
-	const int MAP_CHIP_WIDTH = { 16 };//チップの横並び数
-	const int MAP_CHIP_HEIGHT = { 12 };//チップの縦並び数
-	const int MAP_CHIP_NUM_X = { 8 };//マップチップウィンドウの横並び数
-	const int MAP_CHIP_NUM_Y = { 24 };//マップチップウィンドウの縦並び数
-	const int MAP_CHIP_WIN_WIDTH = { IMAGE_SIZE * MAP_CHIP_NUM_X };//ウィンドウの横幅
-	const int MAP_CHIP_WIN_HEIGHT = { IMAGE_SIZE * MAP_CHIP_NUM_Y };//ウィンドウの縦幅
+	////同じ名前の変数はあとでまとめましょう
+	//const int IMAGE_SIZE = { 32 }; // 画像のサイズ
+	//const int MAP_CHIP_WIDTH = { 16 };//チップの横並び数
+	//const int MAP_CHIP_HEIGHT = { 12 };//チップの縦並び数
+	//const int MAP_CHIP_NUM_X = { 8 };//マップチップウィンドウの横並び数
+	//const int MAP_CHIP_NUM_Y = { 24 };//マップチップウィンドウの縦並び数
+	//const int MAP_CHIP_WIN_WIDTH = { IMAGE_SIZE * MAP_CHIP_NUM_X };//ウィンドウの横幅
+	//const int MAP_CHIP_WIN_HEIGHT = { IMAGE_SIZE * MAP_CHIP_NUM_Y };//ウィンドウの縦幅
+
+	struct MapChipConfig {
+		int TILE_PIX_SIZE;// 1タイルのピクセルサイズ
+		int TILES_X;//マップチップシートのマップチップの横並び数
+		int TILES_Y; //マップチップシートのマップチップの縦並び数
+		int MAPCHIP_VIEW_X;//マップチップウィンドウの横並び数
+		int MAPCHIP_VIEW_Y; //マップチップウィンドウの縦並び数
+		int MAPCHIP_WIN_WIDTH() const { return(TILE_PIX_SIZE * MAPCHIP_VIEW_X); }
+		int MAPCHIP_WIN_HEIGHT() const { return(TILE_PIX_SIZE * MAPCHIP_VIEW_Y); }
+	};
+
+	MapChipConfig LoadMapChipConfig(const std::string& iniPath)
+	{
+		MapChipConfig cfg;
+		cfg.TILE_PIX_SIZE = ReadIntFromIni("MapChip", "TILE_PIX_SIZE", 32, iniPath);
+		cfg.TILES_X = ReadIntFromIni("MapChip", "TILES_X", 16, iniPath);
+		cfg.TILES_Y = ReadIntFromIni("MapChip", "TILES_Y", 12, iniPath);
+		cfg.MAPCHIP_VIEW_X = ReadIntFromIni("MapChip", "MAPCHIP_VIEW_X", 8, iniPath);
+		cfg.MAPCHIP_VIEW_Y = ReadIntFromIni("MapChip", "MAPCHIP_VIEW_Y", 24, iniPath);
+		return cfg;
+	}
+
+	const MapChipConfig& GetMapChipConfig()
+	{
+		static MapChipConfig config = LoadMapChipConfig("setting.ini");
+		return config;
+	}
+
 
 	// ドラッグ開始と判定する移動量の閾値
-	const int DRAG_THRESHOLD = 5;
+	//const int DRAG_THRESHOLD = 5;
 }
 
 MapChip::MapChip()
