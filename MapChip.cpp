@@ -1,8 +1,13 @@
+
+
+#define NOMINMAX
+
 #include "MapChip.h"
 #include "globals.h"
 #include "Source\Screen.h"
 #include "Input.h"
 #include "ImGui/imgui.h"
+#include <algorithm>
 
 
 namespace
@@ -20,7 +25,7 @@ namespace
 
 MapChip::MapChip()
 	: GameObject(), isUpdate_(false), isInMapChipArea_(false), selectedIndex_(-1)
-	, cfg_(GetMapChipConfig()), selected_({ 0,0 }) //初期値を-1で16*12の配列を初期化する
+	, cfg_(GetMapChipConfig()), selected_({ 0,0 }), isHold_(false), ScrollOffset_({ 0,0 })
 {
 
 
@@ -80,11 +85,21 @@ void MapChip::Update()
 
 
 	if (isInMapChipArea_) {
+		if (Input::IsKeyDown(KEY_INPUT_LEFT))  
+			ScrollOffset_.x = std::max(0, ScrollOffset_.x - 1);
+		if (Input::IsKeyDown(KEY_INPUT_RIGHT)) 
+			ScrollOffset_.x = std::min(std::max(0, cfg_.TILES_X - cfg_.MAPCHIP_VIEW_X), ScrollOffset_.x + 1);
+		if (Input::IsKeyDown(KEY_INPUT_UP))    
+			ScrollOffset_.y = std::max(0, ScrollOffset_.y - 1);
+		if (Input::IsKeyDown(KEY_INPUT_DOWN))  
+			ScrollOffset_.y = std::min(std::max(0, cfg_.TILES_Y - cfg_.MAPCHIP_VIEW_Y), ScrollOffset_.y + 1);
+
 		//マウスの座標をマップチップのインデックスに変換
 		selected_ = ScreenToChipIndex(mousePos);
 
-
-		int index = selected_.y * cfg_.TILES_X + selected_.x;
+		int gx = selected_.x + ScrollOffset_.x;
+		int gy = selected_.y + ScrollOffset_.y;
+		int index = gy * cfg_.TILES_X + gx;
 
 		//マウスの座標がマップチップの範囲内にあるかどうかをチェック
 		if (index >= 0 && index < bgHandle.size() && Input::IsButtonDown(MOUSE_INPUT_LEFT)) {
@@ -107,7 +122,11 @@ void MapChip::Draw()
 	// チップ表示
 	for (int y = 0; y < cfg_.TILES_Y; y++) {
 		for (int x = 0; x < cfg_.TILES_X; x++) {
-			int index = y * cfg_.TILES_X + x;
+
+			int gx = x + ScrollOffset_.x;
+			int gy = y + ScrollOffset_.y;
+			//int index = gy * cfg_.TILES_X + gx;
+			int index = gy * cfg_.TILES_X + gx;
 			DrawGraph(originX + x * cfg_.TILE_PIX_SIZE,
 				originY + y * cfg_.TILE_PIX_SIZE,
 				bgHandle[index], TRUE);
