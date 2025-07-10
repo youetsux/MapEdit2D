@@ -154,6 +154,7 @@
     <ClInclude Include="Library\SceneManager.h" />
     <ClInclude Include="Library\Time.h" />
     <ClInclude Include="MapChip.h" />
+    <ClInclude Include="MapChipConfig.h" />
     <ClInclude Include="MapEdit.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Source\BootScene.h" />
@@ -179,6 +180,7 @@
     <ClCompile Include="Library\SceneManager.cpp" />
     <ClCompile Include="Library\Time.cpp" />
     <ClCompile Include="MapChip.cpp" />
+    <ClCompile Include="MapChipConfig.cpp" />
     <ClCompile Include="MapEdit.cpp" />
     <ClCompile Include="Source\BootScene.cpp" />
     <ClCompile Include="Source\PlayScene.cpp" />
